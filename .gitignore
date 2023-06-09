@@ -1,2 +1,5 @@
 /bin
 /pkg
+
+scanner-linux-amd64
+scanner-macos-arm64
