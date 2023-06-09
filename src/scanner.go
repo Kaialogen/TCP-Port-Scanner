@@ -10,14 +10,12 @@ package main
 import (
 	"fmt"
 	"net"
+	"os"
 	"sort"
 	"time"
 )
 
-var ip_input = ""
-var port_type = ""
-
-func worker(ports, results chan int) {
+func worker(ports, results chan int, ip_input, port_type string) {
 	for p := range ports {
 		address := fmt.Sprintf("%s:%d", ip_input, p)
 		conn, err := net.Dial(port_type, address)
@@ -32,20 +30,24 @@ func worker(ports, results chan int) {
 }
 
 func main() {
+
+	// check for correct usage
+	if len(os.Args) != 3 {
+		fmt.Println("Usage: ", os.Args[0], "[ip] [tcp/udp]")
+		os.Exit(1)
+	}
+
+	ip_input := os.Args[1]
+	port_type := os.Args[2]
+
 	ports := make(chan int, 100)
 	results := make(chan int)
 	var openports []int
 
-	fmt.Println("Enter IP to be scanned: ")
-	fmt.Scan(&ip_input)
-
-	fmt.Println("tcp or udp: ")
-	fmt.Scan(&port_type)
-
 	start := time.Now()
 
 	for i := 0; i < cap(ports); i++ {
-		go worker(ports, results)
+		go worker(ports, results, ip_input, port_type)
 	}
 
 	go func() {

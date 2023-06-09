@@ -2,6 +2,12 @@
 
 Written using Go 1.20.5
 
+## Usage
+
+```shell
+$ ./scanner [ip] [tcp/udp]
+```
+
 ## Building From Source
 
 Since this tool is written in Go you need to install the Go language/compiler/etc. Full details of installation and set up can be found on the Go language website.
