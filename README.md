@@ -5,7 +5,7 @@ Written using Go 1.20.5
 ## Usage
 
 ```shell
-$ ./scanner [ip] [tcp/udp]
+$ ./scanner [ip] -type [tcp]
 ```
 
 ## Building From Source
