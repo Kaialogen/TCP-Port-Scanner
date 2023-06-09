@@ -1,5 +1,5 @@
 //--------------------------------
-// GO TCP/UDP SCANNER v0.0.1
+// GO TCP/UDP SCANNER v0.0.1-alpha
 //
 // Made by Kaialogen
 //
