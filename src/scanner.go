@@ -1,5 +1,5 @@
 //--------------------------------
-// GO TCP/UDP SCANNER v0.0.2-alpha
+// GO TCP SCANNER v0.0.5-alpha
 //
 // Made by Kaialogen
 //
@@ -8,6 +8,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"net"
 	"os"
@@ -15,10 +16,10 @@ import (
 	"time"
 )
 
-func worker(ports, results chan int, ip_input, port_type string) {
+func worker(ports, results chan int, ip string, portType string) {
 	for p := range ports {
-		address := fmt.Sprintf("%s:%d", ip_input, p)
-		conn, err := net.Dial(port_type, address)
+		address := fmt.Sprintf("%s:%d", ip, p)
+		conn, err := net.Dial(portType, address)
 		if err != nil {
 			//port is closed or filtered
 			results <- 0
@@ -30,15 +31,15 @@ func worker(ports, results chan int, ip_input, port_type string) {
 }
 
 func main() {
-
+	portType := flag.String("type", "tcp", "Type of port to scan (tcp)")
+	flag.Parse()
 	// check for correct usage
-	if len(os.Args) != 3 {
-		fmt.Println("Usage: ", os.Args[0], "[ip] [tcp/udp]")
+	if len(flag.Args()) < 1 {
+		fmt.Println("Usage: ", os.Args[0], "[ip] -type [tcp]")
 		os.Exit(1)
 	}
 
-	ip_input := os.Args[1]
-	port_type := os.Args[2]
+	ip := flag.Args()[0]
 
 	ports := make(chan int, 100)
 	results := make(chan int)
@@ -47,7 +48,7 @@ func main() {
 	start := time.Now()
 
 	for i := 0; i < cap(ports); i++ {
-		go worker(ports, results, ip_input, port_type)
+		go worker(ports, results, ip, *portType)
 	}
 
 	go func() {

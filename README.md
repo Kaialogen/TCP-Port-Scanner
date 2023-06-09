@@ -1,4 +1,4 @@
-# TCP-UDP-Port-Scanner
+# TCP-Port-Scanner
 
 Written using Go 1.20.5
 
